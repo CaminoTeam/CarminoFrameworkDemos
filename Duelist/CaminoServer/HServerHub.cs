@@ -32,6 +32,34 @@ namespace CaminoServer
             }
         }
 
+        public void DrawCard(int playerID)
+        {
+            MdGlobal.GameData.Players[playerID].DrawCard();
+            if (playerID==0)
+            {
+                MdGlobal.GameData.CurrentState = 4; // p1 sacrifice
+            }
+            else
+            {
+                MdGlobal.GameData.CurrentState = 9; // p2 sacrifice
+            }
+        }
+
+        public void SacrificeCard(int playerID, int cardIndex)
+        {
+            MdGlobal.GameData.Players[playerID].Hand.RemoveAt(cardIndex);
+            MdGlobal.GameData.Players[playerID].MaxMana += 1;
+            MdGlobal.GameData.Players[playerID].Mana += 1;
+            if (playerID == 0)
+            {
+                MdGlobal.GameData.CurrentState = 5; // p1 play hub
+            }
+            else
+            {
+                MdGlobal.GameData.CurrentState = 10; // p2 play hub
+            }
+
+        }
 
         public static void UpdateGameData()
         {
@@ -39,6 +67,7 @@ namespace CaminoServer
             var hc = GlobalHost.ConnectionManager.GetHubContext<HServerHub>();
             hc.Clients.All.ReceivedGameData(MdSerializer.Serialize(MdGlobal.GameData));
         }
+        
 
     }
 }

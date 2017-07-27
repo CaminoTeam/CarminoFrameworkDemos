@@ -198,6 +198,7 @@
             this.PBAvatarPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBAvatarPlayer1.TabIndex = 8;
             this.PBAvatarPlayer1.TabStop = false;
+            this.PBAvatarPlayer1.Click += new System.EventHandler(this.PBAvatarPlayer1_Click);
             // 
             // PBSpellPlayer1
             // 
@@ -208,6 +209,8 @@
             this.PBSpellPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBSpellPlayer1.TabIndex = 9;
             this.PBSpellPlayer1.TabStop = false;
+            this.PBSpellPlayer1.Visible = false;
+            this.PBSpellPlayer1.Click += new System.EventHandler(this.PBSpellPlayer1_Click);
             // 
             // PBAvatarPlayer2
             // 
@@ -219,6 +222,7 @@
             this.PBAvatarPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBAvatarPlayer2.TabIndex = 10;
             this.PBAvatarPlayer2.TabStop = false;
+            this.PBAvatarPlayer2.Click += new System.EventHandler(this.PBAvatarPlayer2_Click);
             // 
             // PBSpellPlayer2
             // 
@@ -229,6 +233,8 @@
             this.PBSpellPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBSpellPlayer2.TabIndex = 11;
             this.PBSpellPlayer2.TabStop = false;
+            this.PBSpellPlayer2.Visible = false;
+            this.PBSpellPlayer2.Click += new System.EventHandler(this.PBSpellPlayer2_Click);
             // 
             // LCardPlayer2
             // 

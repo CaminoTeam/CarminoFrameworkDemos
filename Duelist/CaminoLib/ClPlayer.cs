@@ -14,7 +14,7 @@ namespace CaminoLib
         public List<Card> Hand { get; set; }
         public List<Unit> DeployedUnits { get; set; }
         public int SelectedSpellID { get; set; }
-        public int SelectedUnitIndex { get; set; }
+        public Unit SelectedUnit { get; set; }
         public int MaxMana { get; set; }
         public int Mana { get; set; }
         public int Health { get; set; }
@@ -24,6 +24,7 @@ namespace CaminoLib
         {
             Nickname = "Unnamed Player";
             Deck = GenerateDefaultDeck();
+            Console.WriteLine("player constructor deck count " + Deck.Count.ToString());
             Hand = new List<Card>();
             DrawCard();
             DrawCard();
@@ -32,7 +33,7 @@ namespace CaminoLib
             DrawCard();
             DeployedUnits = new List<Unit>();
             SelectedSpellID = -1;
-            SelectedUnitIndex = -1;
+            SelectedUnit = null;
             MaxMana = 0;
             Mana = 0;
             Health = 30;

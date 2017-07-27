@@ -22,9 +22,9 @@ namespace CaminoServer
             UnitData = new Unit();
         }
 
-        public UCUnit(Card card, int owner) : this()
+        public UCUnit(Unit unit) : this()
         {
-            UnitData = new Unit(card.CardID, owner);
+            UnitData = unit;
         }
         
         public void SetUIToNormal()
