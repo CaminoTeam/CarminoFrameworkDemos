@@ -24,7 +24,7 @@ namespace CaminoLib
 
         public Unit(int unitID, int owner) : this()
         {
-            UnitID = UnitID;
+            UnitID = unitID;
             Owner = owner;
         }
 

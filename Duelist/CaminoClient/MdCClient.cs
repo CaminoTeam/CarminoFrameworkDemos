@@ -22,6 +22,7 @@ namespace CaminoClient
             // add event handlers for SignalR here
             SRHub.On("ReceivedJoinGameConfirm", x => MdUI.MainForm.Invoke(new Action(() => ReceivedJoinGameConfirm(x))));
             SRHub.On("ReceivedGameData", x => MdUI.MainForm.Invoke(new Action(() => ReceivedGameData(x))));
+            SRHub.On("ReceiveStatusUpdate", x => MdUI.MainForm.Invoke(new Action(() => ReceiveStatusUpdate(x))));
 
         }
 
@@ -46,6 +47,7 @@ namespace CaminoClient
         public static void ReceivedGameData(string input)
         {
             ClGameData gd = MdSerializer.Deserialize<ClGameData>(input);
+            //System.Windows.Forms.MessageBox.Show(gd.Players[0].Hand.Count.ToString());
             bool stateChanged = false;
             if (gd.CurrentState != MdGlobal.GameData.CurrentState)
             {
@@ -54,7 +56,7 @@ namespace CaminoClient
             MdGlobal.GameData = gd;
             Console.WriteLine("Client update GameData from Server with state " + gd.CurrentState.ToString());
             MdUI.MainForm.SetLStatus(gd.CurrentStatus);
-
+            MdUI.MainForm.UpdatePlayerStatuses();
             if (stateChanged)
             {
                 if (MdUI.MainForm != null)
@@ -73,14 +75,44 @@ namespace CaminoClient
             }
         }
         
+        public static void ReceiveStatusUpdate(string input)
+        {
+            MdUI.MainForm.SetLStatus(input);
+        }
 
         public static void SendJoinGameRequest()
         {
             SRHub.Invoke("RequestJoinGame", MdGlobal.Nickname);
         }
 
+        public static void DrawCard()
+        {
+            SRHub.Invoke("DrawCard", MdGlobal.PlayerID);
 
+        }
 
+        public static void SacrificeCard(int cardIndex)
+        {
+            SRHub.Invoke("SacrificeCard", MdGlobal.PlayerID, cardIndex);
+
+        }
+
+        public static void SkipSacrifice()
+        {
+            SRHub.Invoke("SkipSacrifice", MdGlobal.PlayerID);
+
+        }
+        public static void PlayCard(int cardIndex)
+        {
+            SRHub.Invoke("PlayCard", MdGlobal.PlayerID, cardIndex);
+
+        }
+
+        public static void EndTurn()
+        {
+            SRHub.Invoke("EndTurn", MdGlobal.PlayerID);
+
+        }
 
     }
 }

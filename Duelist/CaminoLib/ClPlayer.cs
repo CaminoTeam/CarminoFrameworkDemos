@@ -9,6 +9,7 @@ namespace CaminoLib
     // place scores and player unique stuff in here
     public class ClPlayer
     {
+        private static Random rng = new Random();
         public string Nickname { get; set; }
         public List<Card> Deck { get; set; }
         public List<Card> Hand { get; set; }
@@ -23,14 +24,8 @@ namespace CaminoLib
         public ClPlayer()
         {
             Nickname = "Unnamed Player";
-            Deck = GenerateDefaultDeck();
-            Console.WriteLine("player constructor deck count " + Deck.Count.ToString());
+            Deck = new List<Card>();
             Hand = new List<Card>();
-            DrawCard();
-            DrawCard();
-            DrawCard();
-            DrawCard();
-            DrawCard();
             DeployedUnits = new List<Unit>();
             SelectedSpellID = -1;
             SelectedUnit = null;
@@ -38,6 +33,17 @@ namespace CaminoLib
             Mana = 0;
             Health = 30;
             
+        }
+
+        public void Init()
+        {
+
+            Deck = GenerateDefaultDeck();
+            DrawCard();
+            DrawCard();
+            DrawCard();
+            DrawCard();
+            DrawCard();
         }
 
         public ClPlayer(string nickname) : this()
@@ -128,6 +134,20 @@ namespace CaminoLib
                 var cd = new Card(1, 6, 5);
                 ls.Add(cd);
             }
+
+
+            int n = ls.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                var value = ls[k];
+                ls[k] = ls[n];
+                ls[n] = value;
+            }
+
+
+
             return ls;
         }
     }

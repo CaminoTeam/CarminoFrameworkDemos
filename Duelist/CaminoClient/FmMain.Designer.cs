@@ -153,7 +153,7 @@
             this.LCardPlayer1.AutoSize = true;
             this.LCardPlayer1.BackColor = System.Drawing.Color.Transparent;
             this.LCardPlayer1.ForeColor = System.Drawing.Color.Gold;
-            this.LCardPlayer1.Location = new System.Drawing.Point(1535, 129);
+            this.LCardPlayer1.Location = new System.Drawing.Point(1517, 129);
             this.LCardPlayer1.Name = "LCardPlayer1";
             this.LCardPlayer1.Size = new System.Drawing.Size(102, 24);
             this.LCardPlayer1.TabIndex = 23;
@@ -164,7 +164,7 @@
             this.LManaPlayer1.AutoSize = true;
             this.LManaPlayer1.BackColor = System.Drawing.Color.Transparent;
             this.LManaPlayer1.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.LManaPlayer1.Location = new System.Drawing.Point(1535, 89);
+            this.LManaPlayer1.Location = new System.Drawing.Point(1517, 89);
             this.LManaPlayer1.Name = "LManaPlayer1";
             this.LManaPlayer1.Size = new System.Drawing.Size(83, 24);
             this.LManaPlayer1.TabIndex = 22;
@@ -174,7 +174,7 @@
             // 
             this.LHealthPlayer1.AutoSize = true;
             this.LHealthPlayer1.BackColor = System.Drawing.Color.Transparent;
-            this.LHealthPlayer1.Location = new System.Drawing.Point(1535, 53);
+            this.LHealthPlayer1.Location = new System.Drawing.Point(1517, 53);
             this.LHealthPlayer1.Name = "LHealthPlayer1";
             this.LHealthPlayer1.Size = new System.Drawing.Size(76, 24);
             this.LHealthPlayer1.TabIndex = 21;
@@ -184,7 +184,7 @@
             // 
             this.LPlayer1Info.AutoSize = true;
             this.LPlayer1Info.BackColor = System.Drawing.Color.Transparent;
-            this.LPlayer1Info.Location = new System.Drawing.Point(1535, 19);
+            this.LPlayer1Info.Location = new System.Drawing.Point(1517, 19);
             this.LPlayer1Info.Name = "LPlayer1Info";
             this.LPlayer1Info.Size = new System.Drawing.Size(91, 24);
             this.LPlayer1Info.TabIndex = 20;
@@ -195,7 +195,7 @@
             this.FLPMain.BackColor = System.Drawing.Color.Transparent;
             this.FLPMain.Location = new System.Drawing.Point(13, 264);
             this.FLPMain.Name = "FLPMain";
-            this.FLPMain.Size = new System.Drawing.Size(1640, 350);
+            this.FLPMain.Size = new System.Drawing.Size(1640, 697);
             this.FLPMain.TabIndex = 25;
             // 
             // PBButton
@@ -208,16 +208,17 @@
             this.PBButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBButton.TabIndex = 26;
             this.PBButton.TabStop = false;
+            this.PBButton.Click += new System.EventHandler(this.PBButton_Click);
             // 
             // LButtonDesc
             // 
             this.LButtonDesc.AutoSize = true;
             this.LButtonDesc.BackColor = System.Drawing.Color.Transparent;
-            this.LButtonDesc.Location = new System.Drawing.Point(1663, 624);
+            this.LButtonDesc.Location = new System.Drawing.Point(1655, 617);
             this.LButtonDesc.Name = "LButtonDesc";
-            this.LButtonDesc.Size = new System.Drawing.Size(119, 24);
+            this.LButtonDesc.Size = new System.Drawing.Size(181, 24);
             this.LButtonDesc.TabIndex = 27;
-            this.LButtonDesc.Text = "Draw Card";
+            this.LButtonDesc.Text = "Setting Up Game";
             this.LButtonDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FmMain

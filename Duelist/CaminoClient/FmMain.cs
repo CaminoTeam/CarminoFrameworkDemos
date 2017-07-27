@@ -25,6 +25,15 @@ namespace CaminoClient
         {
             Console.WriteLine("Client state machine switch to state " + state.ToString());
 
+
+            if (state > 2)
+            {
+
+                RefreshHand();
+                UpdatePlayerStatuses();
+            }
+            SetLStatus(MdGlobal.GameData.CurrentStatus);
+
             if (state == 1)
             {
                 // do nothing
@@ -37,7 +46,6 @@ namespace CaminoClient
             {
                 if (MdGlobal.PlayerID == 0)
                 {
-                    RefreshHand();
                     LButtonDesc.Text = "Draw a Card";
                 }
                 else
@@ -106,7 +114,6 @@ namespace CaminoClient
             {
                 if (MdGlobal.PlayerID == 1)
                 {
-                    RefreshHand();
                     LButtonDesc.Text = "Draw a Card";
                 }
                 else
@@ -177,13 +184,6 @@ namespace CaminoClient
             }
 
 
-            if (state > 2)
-            {
-
-                UpdatePlayerStatuses();
-            }
-            SetLStatus(MdGlobal.GameData.CurrentStatus);
-
         }
 
 
@@ -195,12 +195,16 @@ namespace CaminoClient
 
         private void RefreshHand()
         {
-            FLPMain.Controls.Clear();
-            foreach(var cd in MdGlobal.GameData.Players[MdGlobal.PlayerID].Hand)
+            if (FLPMain.Controls.Count != MdGlobal.GameData.Players[MdGlobal.PlayerID].Hand.Count)
             {
-                var ucd = new UCCard(cd);
-                ucd.Clicked += (sender, e) => ClickedCard(sender, e);
-                ucd.Parent = FLPMain;
+
+                FLPMain.Controls.Clear();
+                foreach (var cd in MdGlobal.GameData.Players[MdGlobal.PlayerID].Hand)
+                {
+                    var ucd = new UCCard(cd);
+                    ucd.Clicked += (sender, e) => ClickedCard(sender, e);
+                    ucd.Parent = FLPMain;
+                }
             }
         }
 
@@ -230,17 +234,42 @@ namespace CaminoClient
 
         public void UpdatePlayerStatuses()
         {
-            var ps = MdGlobal.GameData.Players;
-            this.LPlayer1Info.Text = ps[0].Nickname;
-            LHealthPlayer1.Text = "HP: " + ps[0].Health.ToString();
-            LManaPlayer1.Text = "MP: " + ps[0].Mana.ToString() + "/" + ps[0].MaxMana.ToString();
-            LCardPlayer1.Text = "Card: " + ps[0].Hand.Count.ToString() + "/" + ps[0].Deck.Count.ToString();
-            
 
-            this.LPlayer2Info.Text = ps[1].Nickname;
-            LHealthPlayer2.Text = "HP: " + ps[1].Health.ToString();
-            LManaPlayer2.Text = "MP: " + ps[1].Mana.ToString() + "/" + ps[1].MaxMana.ToString();
-            LCardPlayer2.Text = "Card: " + ps[1].Hand.Count.ToString() + "/" + ps[1].Deck.Count.ToString();
+
+
+            if (MdUI.MainForm.InvokeRequired)
+            {
+                MdUI.MainForm.Invoke(new Action(() =>
+                {
+                    var ps = MdGlobal.GameData.Players;
+                    this.LPlayer1Info.Text = ps[0].Nickname;
+                    LHealthPlayer1.Text = "HP: " + ps[0].Health.ToString();
+                    LManaPlayer1.Text = "MP: " + ps[0].Mana.ToString() + "/" + ps[0].MaxMana.ToString();
+                    LCardPlayer1.Text = "Card: " + ps[0].Hand.Count.ToString() + "/" + ps[0].Deck.Count.ToString();
+
+
+                    this.LPlayer2Info.Text = ps[1].Nickname;
+                    LHealthPlayer2.Text = "HP: " + ps[1].Health.ToString();
+                    LManaPlayer2.Text = "MP: " + ps[1].Mana.ToString() + "/" + ps[1].MaxMana.ToString();
+                    LCardPlayer2.Text = "Card: " + ps[1].Hand.Count.ToString() + "/" + ps[1].Deck.Count.ToString();
+                }));
+            }
+            else
+            {
+
+                var ps = MdGlobal.GameData.Players;
+                this.LPlayer1Info.Text = ps[0].Nickname;
+                LHealthPlayer1.Text = "HP: " + ps[0].Health.ToString();
+                LManaPlayer1.Text = "MP: " + ps[0].Mana.ToString() + "/" + ps[0].MaxMana.ToString();
+                LCardPlayer1.Text = "Card: " + ps[0].Hand.Count.ToString() + "/" + ps[0].Deck.Count.ToString();
+
+
+                this.LPlayer2Info.Text = ps[1].Nickname;
+                LHealthPlayer2.Text = "HP: " + ps[1].Health.ToString();
+                LManaPlayer2.Text = "MP: " + ps[1].Mana.ToString() + "/" + ps[1].MaxMana.ToString();
+                LCardPlayer2.Text = "Card: " + ps[1].Hand.Count.ToString() + "/" + ps[1].Deck.Count.ToString();
+            }
+
 
 
         }
@@ -265,7 +294,94 @@ namespace CaminoClient
 
         private void ClickedCard(object sender, EventArgs e)
         {
+            var state = MdGlobal.GameData.CurrentState;
+            UCCard card = sender as UCCard;
+            Console.WriteLine("Client clicked on card " + FLPMain.Controls.IndexOf(card).ToString() + " with id " + card.CardData.CardID.ToString());
 
+            if (state == 4)
+            {
+                if (MdGlobal.PlayerID == 0)
+                {
+                    MdCClient.SacrificeCard(FLPMain.Controls.IndexOf(card));
+                }
+
+
+            }
+            else if (state == 5)
+            {
+                if (MdGlobal.PlayerID == 0 && MdGlobal.GameData.Players[MdGlobal.PlayerID].Mana >= card.CardData.CardCost)
+                {
+                    MdCClient.PlayCard(FLPMain.Controls.IndexOf(card));
+                }
+
+
+            }
+            else if (state == 9)
+            {
+                if (MdGlobal.PlayerID == 1)
+                {
+                    MdCClient.SacrificeCard(FLPMain.Controls.IndexOf(card));
+                }
+            }
+            else if (state == 10)
+            {
+                if (MdGlobal.PlayerID == 1 && MdGlobal.GameData.Players[MdGlobal.PlayerID].Mana >= card.CardData.CardCost)
+                {
+                    MdCClient.PlayCard(FLPMain.Controls.IndexOf(card));
+                }
+            }
+        }
+
+        private void PBButton_Click(object sender, EventArgs e)
+        {
+            var state = MdGlobal.GameData.CurrentState;
+            if (state == 3) // assuming a 2 player game, the cycle begins here
+            {
+                if (MdGlobal.PlayerID == 0)
+                {
+                    MdCClient.DrawCard();
+                }
+
+            }
+            else if (state == 4)
+            {
+                if (MdGlobal.PlayerID == 0)
+                {
+                    MdCClient.SkipSacrifice();
+                }
+
+
+            }
+            else if (state == 5)
+            {
+                if (MdGlobal.PlayerID == 0)
+                {
+                    MdCClient.EndTurn();
+                }
+
+
+            }
+            else if (state == 8) // assuming a 2 player game, the second player cycle begins here
+            {
+                if (MdGlobal.PlayerID == 1)
+                {
+                    MdCClient.DrawCard();
+                }
+            }
+            else if (state == 9)
+            {
+                if (MdGlobal.PlayerID == 1)
+                {
+                    MdCClient.SkipSacrifice();
+                }
+            }
+            else if (state == 10)
+            {
+                if (MdGlobal.PlayerID == 1)
+                {
+                    MdCClient.EndTurn();
+                }
+            }
         }
     }
 }

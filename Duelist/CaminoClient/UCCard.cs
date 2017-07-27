@@ -33,12 +33,12 @@ namespace CaminoClient
 
             if (CardData.CardType == 0) // is spell
             {
-                PBMain.Image = MdSprites.P1SpellsSelect[CardData.CardID];
+                PBMain.Image = MdSprites.P1Spells[CardData.CardID];
 
             }
             else
             {
-                PBMain.Image = MdSprites.P1UnitsSelect[CardData.CardID];
+                PBMain.Image = MdSprites.P1Units[CardData.CardID];
 
             }
         }
@@ -57,8 +57,8 @@ namespace CaminoClient
 
             }
         }
-
-        private void PBUnit_Click(object sender, EventArgs e)
+        
+        private void PBMain_Click(object sender, EventArgs e)
         {
 
             if (this.Clicked != null)

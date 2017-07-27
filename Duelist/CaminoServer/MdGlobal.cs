@@ -28,11 +28,19 @@ namespace CaminoServer
                 if (hasChanged)
                 {
                     _GameData.StateChanged += new EventHandler(StateChanged);
+                    _GameData.StatusChanged += new EventHandler(StatusChanged);
+
                 }
             }
         }
 
         public static int MAX_PLAYERS = 2;
+
+        private static void StatusChanged(object sender, EventArgs e)
+        {
+            HServerHub.UpdateGameStatus();
+
+        }
 
         private static void StateChanged(object sender, EventArgs e)
         {

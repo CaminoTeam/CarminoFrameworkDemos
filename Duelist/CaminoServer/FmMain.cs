@@ -37,6 +37,7 @@ namespace CaminoServer
             {
                 UpdatePlayerStatuses();
                 NormalizeUI();
+                MdGlobal.GameData.Players[0].Mana = MdGlobal.GameData.Players[0].MaxMana;
 
                 foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
                 {
@@ -57,9 +58,17 @@ namespace CaminoServer
             else if (state == 5)
             {
                 UpdatePlayerStatuses();
+                PBSpellPlayer1.Visible = false;
+                NormalizeUI();
+
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is performing an action";
 
 
+            }
+            else if (state == 50)
+            {
+                UpdatePlayerStatuses();
+                MdGlobal.GameData.CurrentState = 5;
             }
             else if (state == 6)
             {
@@ -75,6 +84,7 @@ namespace CaminoServer
                             ucu.SetUIToTarget();
                         }
                     }
+                    PBAvatarPlayer2.Image = MdSprites.P2AvatarSelect;
                 }
             }
             else if (state == 7)
@@ -82,6 +92,7 @@ namespace CaminoServer
                 UpdatePlayerStatuses();
 
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + "'s unit is attacking";
+                PBAvatarPlayer2.Image = MdSprites.P2AvatarSelect;
 
                 foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
                 {
@@ -95,6 +106,7 @@ namespace CaminoServer
             {
                 UpdatePlayerStatuses();
                 NormalizeUI();
+                MdGlobal.GameData.Players[1].Mana = MdGlobal.GameData.Players[1].MaxMana;
 
                 foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
                 {
@@ -115,10 +127,17 @@ namespace CaminoServer
             else if (state == 10)
             {
                 UpdatePlayerStatuses();
+                PBSpellPlayer2.Visible = false;
+                NormalizeUI();
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + " is performing an action";
 
-                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[2].Nickname + " is performing an action";
 
+            }
+            else if (state == 100)
+            {
 
+                UpdatePlayerStatuses();
+                MdGlobal.GameData.CurrentState = 10;
             }
             else if (state == 11)
             {
@@ -134,6 +153,8 @@ namespace CaminoServer
                             ucu.SetUIToTarget();
                         }
                     }
+                    PBAvatarPlayer1.Image = MdSprites.P1AvatarSelect;
+
                 }
 
 
@@ -143,6 +164,7 @@ namespace CaminoServer
                 UpdatePlayerStatuses();
 
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + "'s unit is attacking";
+                PBAvatarPlayer1.Image = MdSprites.P1AvatarSelect;
 
                 foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
                 {
@@ -242,16 +264,21 @@ namespace CaminoServer
         public void AddUnit(int unitID, int owner) // remember to invoke this function
         {
             var nu = new Unit(unitID, owner);
+            Console.WriteLine("Server added unit to player " + nu.Owner.ToString() + " with id " + nu.UnitID.ToString());
             MdGlobal.GameData.Players[owner].DeployedUnits.Add(nu);
             var ucu = new UCUnit(nu);
             ucu.Clicked += (sender, e) => ClickedUnit(sender, e);
             if (owner == 0)
             {
                 ucu.Parent = FLPUnitsPlayer1;
+                MdGlobal.GameData.CurrentState = 50;
+
             }
             else
             {
                 ucu.Parent = FLPUnitsPlayer2;
+                MdGlobal.GameData.CurrentState = 100;
+
             }
         }
 
@@ -262,6 +289,9 @@ namespace CaminoServer
 
             if (state == 5 && ucu.UnitData.Owner == 0 && ucu.UnitData.HasAction) // player 1 is selecting an attack origin
             {
+                ucu.UnitData.HasAction = false;
+                ucu.SetUIToNormal();
+
                 MdGlobal.GameData.Players[0].SelectedUnit = ucu.UnitData;
                 MdGlobal.GameData.CurrentState = 7;
             }
@@ -283,7 +313,6 @@ namespace CaminoServer
             {
                 if (MdGlobal.GameData.Players[0].SelectedUnit.Kills(ucu.UnitData))
                 {
-                    MdGlobal.GameData.Players[0].SelectedUnit.HasAction = false;
                     MdGlobal.GameData.Players[1].DeployedUnits.Remove(ucu.UnitData);
                     FLPUnitsPlayer2.Controls.Remove(ucu);
                     MdGlobal.GameData.CurrentState = 5;
@@ -292,6 +321,8 @@ namespace CaminoServer
             }
             else if (state == 10 && ucu.UnitData.Owner == 1 && ucu.UnitData.HasAction) // player 2 is selecting an an attack origin
             {
+                ucu.UnitData.HasAction = false;
+                ucu.SetUIToNormal();
                 MdGlobal.GameData.Players[1].SelectedUnit = ucu.UnitData;
                 MdGlobal.GameData.CurrentState = 12;
 
@@ -348,6 +379,18 @@ namespace CaminoServer
         {
             PBAvatarPlayer1.Image = MdSprites.P1Avatar;
             PBAvatarPlayer2.Image = MdSprites.P2Avatar;
+
+            foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
+            {
+                ucu.SetUIToNormal();
+            }
+
+            foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
+            {
+                ucu.SetUIToNormal();
+
+            }
+
         }
 
         // handles first click casting on spells

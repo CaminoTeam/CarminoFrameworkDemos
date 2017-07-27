@@ -16,12 +16,12 @@ namespace CaminoServer
         public void RequestJoinGame(string nick)
         {
 
-            if (MdGlobal.GameData.Players.Count < MdGlobal.MAX_PLAYERS)
+            if (MdGlobal.GameData.Players.Count < 2)
             {
                 Console.WriteLine("Server added new player " + MdGlobal.GameData.Players.Count.ToString());
                 int playID = MdGlobal.GameData.Players.Count;
                 MdGlobal.GameData.Players.Add(new ClPlayer(nick));
-                MdGlobal.GameData.CurrentPlayer = 0;
+                MdGlobal.GameData.Players[playID].Init();
                 MdGlobal.GameData.CurrentState++;
                 Clients.All.ReceivedJoinGameConfirm(MdSerializer.Serialize(new JoinGameConfirm(new ClPlayer(nick), true, playID)));
                 Clients.All.ReceivedGameData(MdSerializer.Serialize(MdGlobal.GameData));
@@ -41,6 +41,7 @@ namespace CaminoServer
             }
             else
             {
+
                 MdGlobal.GameData.CurrentState = 9; // p2 sacrifice
             }
         }
@@ -52,18 +53,37 @@ namespace CaminoServer
             MdGlobal.GameData.Players[playerID].Mana += 1;
             if (playerID == 0)
             {
+
                 MdGlobal.GameData.CurrentState = 5; // p1 play hub
             }
             else
             {
+
                 MdGlobal.GameData.CurrentState = 10; // p2 play hub
             }
 
         }
 
+        public void SkipSacrifice(int playerID)
+        {
+
+            if (playerID == 0)
+            {
+
+                MdGlobal.GameData.CurrentState = 5; // p1 play hub
+            }
+            else
+            {
+
+                MdGlobal.GameData.CurrentState = 10; // p2 play hub
+            }
+        }
+
         public void PlayCard(int playerID, int cardIndex)
         {
             var card = MdGlobal.GameData.Players[playerID].Hand[cardIndex];
+            MdGlobal.GameData.Players[playerID].Hand.RemoveAt(cardIndex);
+
             MdGlobal.GameData.Players[playerID].Mana -= card.CardCost; // do mana check at client
             if (card.CardType == 0) // is spell
             {
@@ -104,10 +124,12 @@ namespace CaminoServer
         {
             if (playerID == 0)
             {
+
                 MdGlobal.GameData.CurrentState = 8;
             }
             else
             {
+
                 MdGlobal.GameData.CurrentState = 3;
             }
         }
@@ -117,8 +139,18 @@ namespace CaminoServer
             Console.WriteLine("Server update GameData to clients :" + MdGlobal.GameData.ToString());
             var hc = GlobalHost.ConnectionManager.GetHubContext<HServerHub>();
             hc.Clients.All.ReceivedGameData(MdSerializer.Serialize(MdGlobal.GameData));
+
+        }
+
+        public static void UpdateGameStatus()
+        {
+
+            Console.WriteLine("Server update status to clients :" + MdGlobal.GameData.CurrentStatus.ToString());
+            var hc = GlobalHost.ConnectionManager.GetHubContext<HServerHub>();
+            hc.Clients.All.ReceiveStatusUpdate(MdGlobal.GameData.CurrentStatus);
         }
         
+
 
     }
 }

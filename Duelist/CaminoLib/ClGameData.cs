@@ -10,8 +10,31 @@ namespace CaminoLib
     public class ClGameData
     {
         public List<ClPlayer> Players { get; set; }
-        public int CurrentPlayer { get; set; }
-        public string CurrentStatus { get; set; }
+        private string _CurrentStatus;
+
+        public string CurrentStatus
+        {
+            get { return _CurrentStatus; }
+            set
+            {
+                // calls state changed
+                bool hasChanged = false;
+                if (_CurrentStatus != value)
+                {
+                    hasChanged = true;
+                }
+                _CurrentStatus = value;
+
+                if (hasChanged)
+                {
+                    if (StatusChanged != null)
+                    {
+                        StatusChanged(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
 
         private int _CurrentState;
 
@@ -41,12 +64,12 @@ namespace CaminoLib
         
 
         public event EventHandler StateChanged;
+        public event EventHandler StatusChanged;
 
         public ClGameData()
         {
             Players = new List<ClPlayer>();
             CurrentStatus = "Waiting for player 1 to connect";
-            CurrentPlayer = -1;
             CurrentState = 1;
 
         }
