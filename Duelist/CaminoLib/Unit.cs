@@ -12,15 +12,20 @@ namespace CaminoLib
         private static int[] defense = { 1, 2, 2, 1, 3, 3, 4};
         
         public int UnitID { get; set; }
+        public bool HasAction { get; set; }
+        public int Owner { get; set; }
 
         public Unit()
         {
             UnitID = 0;
+            HasAction = false;
+            Owner = 0;
         }
 
-        public Unit(int unitID) : this()
+        public Unit(int unitID, int owner) : this()
         {
             UnitID = UnitID;
+            Owner = owner;
         }
 
         public int GetAttack()

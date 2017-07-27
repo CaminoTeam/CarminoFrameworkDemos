@@ -58,9 +58,76 @@ namespace CaminoLib
 
         private static List<Card> GenerateDefaultDeck()
         {
-            var output = new List<Card>();
-            //TODO:
-            return output;
+            var ls = new List<Card>();
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 0, 4);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 1, 4);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 2, 5);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 3, 4);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 4, 2);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                var cd = new Card(0, 5, 2);
+                ls.Add(cd);
+            }
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                var cd = new Card(1, 0, 1);
+                ls.Add(cd);
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                var cd = new Card(1, 1, 1);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                var cd = new Card(1, 2, 2);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                var cd = new Card(1, 3, 2);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                var cd = new Card(1, 4, 3);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                var cd = new Card(1, 5, 4);
+                ls.Add(cd);
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                var cd = new Card(1, 6, 5);
+                ls.Add(cd);
+            }
+            return ls;
         }
     }
 }

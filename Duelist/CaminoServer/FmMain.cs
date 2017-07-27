@@ -90,6 +90,12 @@ namespace CaminoServer
 
 
             }
+            else if (state == 13)
+            {
+                //TODO:
+                // player has won message here
+
+            }
 
             SetLStatus(MdGlobal.GameData.CurrentStatus);
 

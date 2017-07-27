@@ -101,6 +101,18 @@
     <Compile Include="RotateLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UCHandCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHandCard.Designer.cs">
+      <DependentUpon>UCHandCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCUnit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCUnit.Designer.cs">
+      <DependentUpon>UCUnit.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FmMain.resx">
       <DependentUpon>FmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,6 +125,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UCHandCard.resx">
+      <DependentUpon>UCHandCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCUnit.resx">
+      <DependentUpon>UCUnit.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
