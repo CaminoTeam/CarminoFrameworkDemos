@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using CaminoLib;
 namespace CaminoServer
 {
     static class Program
@@ -19,6 +19,7 @@ namespace CaminoServer
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                MdSprites.Init();
                 MdGlobal.Init();
                 MdUI.Init();
                 MdCServer.Init(args[0]);

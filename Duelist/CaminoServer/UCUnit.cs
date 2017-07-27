@@ -25,6 +25,7 @@ namespace CaminoServer
         public UCUnit(Unit unit) : this()
         {
             UnitData = unit;
+            SetUIToNormal();
         }
         
         public void SetUIToNormal()

@@ -36,6 +36,13 @@ namespace CaminoServer
             else if (state == 3) // assuming a 2 player game, the cycle begins here
             {
                 UpdatePlayerStatuses();
+                NormalizeUI();
+
+                foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
+                {
+                    ucu.UnitData.HasAction = true;
+                    ucu.SetUIToNormal();
+                }
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is drawing a card";
 
 
@@ -50,7 +57,6 @@ namespace CaminoServer
             else if (state == 5)
             {
                 UpdatePlayerStatuses();
-                NormalizeUI();
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is performing an action";
 
 
@@ -73,6 +79,8 @@ namespace CaminoServer
             }
             else if (state == 7)
             {
+                UpdatePlayerStatuses();
+
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + "'s unit is attacking";
 
                 foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
@@ -86,6 +94,13 @@ namespace CaminoServer
             else if (state == 8) // assuming a 2 player game, the second player cycle begins here
             {
                 UpdatePlayerStatuses();
+                NormalizeUI();
+
+                foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
+                {
+                    ucu.UnitData.HasAction = true;
+                    ucu.SetUIToNormal();
+                }
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + " is drawing a card";
 
             }
@@ -100,7 +115,6 @@ namespace CaminoServer
             else if (state == 10)
             {
                 UpdatePlayerStatuses();
-                NormalizeUI();
 
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[2].Nickname + " is performing an action";
 
@@ -126,6 +140,8 @@ namespace CaminoServer
             }
             else if (state == 12)
             {
+                UpdatePlayerStatuses();
+
                 MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + "'s unit is attacking";
 
                 foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
@@ -139,6 +155,8 @@ namespace CaminoServer
             else if (state == 13)
             {
                 //TODO:player has won message here
+                UpdatePlayerStatuses();
+
 
             }
 
@@ -182,6 +200,45 @@ namespace CaminoServer
             }
         }
 
+        public void UpdatePlayerStatuses()
+        {
+            var ps = MdGlobal.GameData.Players;
+            this.LPlayer1Info.Text = ps[0].Nickname;
+            LHealthPlayer1.Text = "HP: " + ps[0].Health.ToString();
+            LManaPlayer1.Text = "MP: " + ps[0].Mana.ToString() + "/" + ps[0].MaxMana.ToString();
+            LCardPlayer1.Text = "Card: " + ps[0].Hand.Count.ToString() + "/" + ps[0].Deck.Count.ToString();
+
+            while (FLPHandPlayer1.Controls.Count > ps[0].Hand.Count)
+            {
+                FLPHandPlayer1.Controls.RemoveAt(0);
+            }
+
+            while (FLPHandPlayer1.Controls.Count < ps[0].Hand.Count)
+            {
+                var uchc = new UCHandCard();
+                uchc.Size = new Size(80, 80);
+                FLPHandPlayer1.Controls.Add(uchc);
+            }
+
+            this.LPlayer2Info.Text = ps[1].Nickname;
+            LHealthPlayer2.Text = "HP: " + ps[1].Health.ToString();
+            LManaPlayer2.Text = "MP: " + ps[1].Mana.ToString() + "/" + ps[1].MaxMana.ToString();
+            LCardPlayer2.Text = "Card: " + ps[1].Hand.Count.ToString() + "/" + ps[1].Deck.Count.ToString();
+
+
+            while (FLPHandPlayer2.Controls.Count > ps[1].Hand.Count)
+            {
+                FLPHandPlayer2.Controls.RemoveAt(0);
+            }
+
+            while (FLPHandPlayer2.Controls.Count < ps[1].Hand.Count)
+            {
+                FLPHandPlayer2.Controls.Add(new UCHandCard());
+            }
+        }
+
+        #endregion ui helpers
+
         public void AddUnit(int unitID, int owner) // remember to invoke this function
         {
             var nu = new Unit(unitID, owner);
@@ -221,26 +278,6 @@ namespace CaminoServer
                         MdGlobal.GameData.CurrentState = 5;
                     }
                 }
-                else if (sp == 1) // arrows
-                {
-                    // damage 2hp enemy units (do nothing over here)
-                }
-                else if (sp == 2) // nova
-                {
-                    // kill all units (do nothing over here)
-                }
-                else if (sp == 3) // potion
-                {
-                    // do nothing
-                }
-                else if (sp == 4) // crystal
-                {
-                    // do nothing
-                }
-                else if (sp == 5) // ic
-                {
-                    // do nothing
-                }
             }
             else if (state == 7 && ucu.UnitData.Owner == 1) // play 1 is selecting an attack target
             {
@@ -272,26 +309,6 @@ namespace CaminoServer
                         MdGlobal.GameData.CurrentState = 10;
                     }
                 }
-                else if (sp == 1) // arrows
-                {
-                    // damage 2hp enemy units (do nothing over here)
-                }
-                else if (sp == 2) // nova
-                {
-                    // kill all units (do nothing over here)
-                }
-                else if (sp == 3) // potion
-                {
-                    // do nothing
-                }
-                else if (sp == 4) // crystal
-                {
-                    // do nothing
-                }
-                else if (sp == 5) // ic
-                {
-                    // do nothing
-                }
             }
             else if (state == 12 && ucu.UnitData.Owner == 0) // player 2 is selecting an attack target
             {
@@ -307,46 +324,9 @@ namespace CaminoServer
             }
         }
 
-        public void UpdatePlayerStatuses()
-        {
-            var ps = MdGlobal.GameData.Players;
-            this.LPlayer1Info.Text = ps[0].Nickname;
-            LHealthPlayer1.Text = "HP: " + ps[0].Health.ToString();
-            LManaPlayer1.Text = "MP: " + ps[0].Mana.ToString() + "/" + ps[0].MaxMana.ToString();
-            LCardPlayer1.Text = "Card: " + ps[0].Hand.Count.ToString() + "/" + ps[0].Deck.Count.ToString();
-            
-            while (FLPHandPlayer1.Controls.Count > ps[0].Hand.Count)
-            {
-                FLPHandPlayer1.Controls.RemoveAt(0);
-            }
-
-            while (FLPHandPlayer1.Controls.Count < ps[0].Hand.Count)
-            {
-                var uchc = new UCHandCard();
-                uchc.Size = new Size(80, 80);
-                FLPHandPlayer1.Controls.Add(uchc);
-            }
-
-            this.LPlayer2Info.Text = ps[1].Nickname;
-            LHealthPlayer2.Text = "HP: " + ps[1].Health.ToString();
-            LManaPlayer2.Text = "MP: " + ps[1].Mana.ToString() + "/" + ps[1].MaxMana.ToString();
-            LCardPlayer2.Text = "Card: " + ps[1].Hand.Count.ToString() + "/" + ps[1].Deck.Count.ToString();
 
 
-            while (FLPHandPlayer2.Controls.Count > ps[1].Hand.Count)
-            {
-                FLPHandPlayer2.Controls.RemoveAt(0);
-            }
-
-            while (FLPHandPlayer2.Controls.Count < ps[1].Hand.Count)
-            {
-                FLPHandPlayer2.Controls.Add(new UCHandCard());
-            }
-        }
-
-        #endregion ui helpers
-
-        private void CastSpell(int spellID, int owner)
+        public void CastSpell(int spellID, int owner)
         {
             if (owner == 0)
             {
@@ -368,16 +348,6 @@ namespace CaminoServer
         {
             PBAvatarPlayer1.Image = MdSprites.P1Avatar;
             PBAvatarPlayer2.Image = MdSprites.P2Avatar;
-            foreach (UCUnit ucu in FLPUnitsPlayer1.Controls)
-            {
-                ucu.UnitData.HasAction = true;
-                ucu.SetUIToNormal();
-            }
-            foreach (UCUnit ucu in FLPUnitsPlayer2.Controls)
-            {
-                ucu.UnitData.HasAction = true;
-                ucu.SetUIToNormal();
-            }
         }
 
         // handles first click casting on spells
@@ -501,12 +471,42 @@ namespace CaminoServer
 
         private void PBAvatarPlayer1_Click(object sender, EventArgs e)
         {
-
+            int state = MdGlobal.GameData.CurrentState;
+            if (state == 11) // player 2 is selecting a spell target
+            {
+                int sp = MdGlobal.GameData.Players[1].SelectedSpellID;
+                if (sp == 0) // fireball
+                {
+                    // damage single target 4 hp
+                    MdGlobal.GameData.Players[0].Health -= 4;
+                    MdGlobal.GameData.CurrentState = 10;
+                }
+            }
+            else if (state == 12) // player 2 is selecting an attack target
+            {
+                MdGlobal.GameData.Players[0].Health -= MdGlobal.GameData.Players[1].SelectedUnit.GetAttack();
+                MdGlobal.GameData.CurrentState = 10;
+            }
         }
 
         private void PBAvatarPlayer2_Click(object sender, EventArgs e)
         {
-
+            int state = MdGlobal.GameData.CurrentState;
+            if (state == 6) // player 2 is selecting a spell target
+            {
+                int sp = MdGlobal.GameData.Players[0].SelectedSpellID;
+                if (sp == 0) // fireball
+                {
+                    // damage single target 4 hp
+                    MdGlobal.GameData.Players[1].Health -= 4;
+                    MdGlobal.GameData.CurrentState = 5;
+                }
+            }
+            else if (state == 7) // player 2 is selecting an attack target
+            {
+                MdGlobal.GameData.Players[1].Health -= MdGlobal.GameData.Players[0].SelectedUnit.GetAttack();
+                MdGlobal.GameData.CurrentState = 5;
+            }
         }
     }
 }

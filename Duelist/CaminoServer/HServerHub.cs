@@ -61,6 +61,57 @@ namespace CaminoServer
 
         }
 
+        public void PlayCard(int playerID, int cardIndex)
+        {
+            var card = MdGlobal.GameData.Players[playerID].Hand[cardIndex];
+            MdGlobal.GameData.Players[playerID].Mana -= card.CardCost; // do mana check at client
+            if (card.CardType == 0) // is spell
+            {
+                if (MdUI.MainForm != null)
+                {
+
+                    if (MdUI.MainForm.InvokeRequired)
+                    {
+                        MdUI.MainForm.Invoke(new Action(() => MdUI.MainForm.CastSpell(card.CardID,playerID)));
+                    }
+                    else
+                    {
+                        MdUI.MainForm.CastSpell(card.CardID, playerID);
+                    }
+                }
+
+            }
+            else if (card.CardType == 1) // is unit
+            {
+
+                if (MdUI.MainForm != null)
+                {
+
+                    if (MdUI.MainForm.InvokeRequired)
+                    {
+                        MdUI.MainForm.Invoke(new Action(() => MdUI.MainForm.AddUnit(card.CardID, playerID)));
+                    }
+                    else
+                    {
+                        MdUI.MainForm.AddUnit(card.CardID, playerID);
+                        UpdateGameData();
+                    }
+                }
+            }
+        }
+
+        public void EndTurn(int playerID)
+        {
+            if (playerID == 0)
+            {
+                MdGlobal.GameData.CurrentState = 8;
+            }
+            else
+            {
+                MdGlobal.GameData.CurrentState = 3;
+            }
+        }
+
         public static void UpdateGameData()
         {
             Console.WriteLine("Server update GameData to clients :" + MdGlobal.GameData.ToString());
