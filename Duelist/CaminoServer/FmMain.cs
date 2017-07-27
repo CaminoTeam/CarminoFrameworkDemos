@@ -34,17 +34,60 @@ namespace CaminoServer
             }
             else if (state == 3) // assuming a 2 player game, the cycle begins here
             {
-                MdGlobal.GameData.CurrentStatus = "Game starting";
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is drawing a card";
 
             }
             else if (state == 4)
             {
-                MdGlobal.GameData.CurrentStatus = "";
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is sacrificing a card";
+
 
             }
             else if (state == 5)
             {
-                MdGlobal.GameData.CurrentStatus = "";
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is performing an action";
+
+
+            }
+            else if (state == 6)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + " is casting a spell";
+
+
+            }
+            else if (state == 7)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[0].Nickname + "'s unit is attacking";
+
+
+            }
+            else if (state == 8) // assuming a 2 player game, the cycle begins here
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + " is drawing a card";
+
+            }
+            else if (state == 9)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[1].Nickname + " is sacrificing a card";
+
+
+            }
+            else if (state == 10)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[2].Nickname + " is performing an action";
+
+
+            }
+            else if (state == 11)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[3].Nickname + " is casting a spell";
+
+
+            }
+            else if (state == 12)
+            {
+                MdGlobal.GameData.CurrentStatus = MdGlobal.GameData.Players[4].Nickname + "'s unit is attacking";
+
 
             }
 
