@@ -130,5 +130,26 @@ namespace CaminoClient
                 SetLStatus("You have selected a hand, waiting for the other player");
             }
         }
+        public bool Pressed { get; set; }
+        private void TBBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && Pressed == false)
+            {
+                Pressed = true;
+                if (TBBarcode.Text.Contains("rock"))
+                {
+                    PBRock_Click(PBRock, null);
+                }
+                else if (TBBarcode.Text.Contains("paper"))
+                {
+                    PBPaper_Click(PBPaper, null);
+                }
+                else if (TBBarcode.Text.Contains("scissors"))
+                {
+                    PBScissors_Click(PBScissors, null);
+                }
+
+            }
+        }
     }
 }

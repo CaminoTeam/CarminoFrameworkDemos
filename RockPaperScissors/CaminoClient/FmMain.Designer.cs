@@ -36,6 +36,8 @@
             this.PBPaper = new System.Windows.Forms.PictureBox();
             this.PBScissors = new System.Windows.Forms.PictureBox();
             this.LScore = new System.Windows.Forms.Label();
+            this.TBBarcode = new System.Windows.Forms.TextBox();
+            this.BtnUseBarcode = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PBRock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBPaper)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBScissors)).BeginInit();
@@ -126,6 +128,26 @@
             this.LScore.TabIndex = 6;
             this.LScore.Text = "Score: 0";
             // 
+            // TBBarcode
+            // 
+            this.TBBarcode.Location = new System.Drawing.Point(532, 1300);
+            this.TBBarcode.Name = "TBBarcode";
+            this.TBBarcode.Size = new System.Drawing.Size(100, 32);
+            this.TBBarcode.TabIndex = 7;
+            this.TBBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TBBarcode_KeyDown);
+            // 
+            // BtnUseBarcode
+            // 
+            this.BtnUseBarcode.BackColor = System.Drawing.Color.Red;
+            this.BtnUseBarcode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUseBarcode.ForeColor = System.Drawing.Color.White;
+            this.BtnUseBarcode.Location = new System.Drawing.Point(16, 872);
+            this.BtnUseBarcode.Name = "BtnUseBarcode";
+            this.BtnUseBarcode.Size = new System.Drawing.Size(172, 38);
+            this.BtnUseBarcode.TabIndex = 8;
+            this.BtnUseBarcode.Text = "UseBarcode";
+            this.BtnUseBarcode.UseVisualStyleBackColor = false;
+            // 
             // FmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
@@ -134,6 +156,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.Controls.Add(this.BtnUseBarcode);
+            this.Controls.Add(this.TBBarcode);
             this.Controls.Add(this.LScore);
             this.Controls.Add(this.PBScissors);
             this.Controls.Add(this.PBPaper);
@@ -164,6 +188,8 @@
         private System.Windows.Forms.PictureBox PBPaper;
         private System.Windows.Forms.PictureBox PBScissors;
         private System.Windows.Forms.Label LScore;
+        private System.Windows.Forms.TextBox TBBarcode;
+        private System.Windows.Forms.Button BtnUseBarcode;
     }
 }
 

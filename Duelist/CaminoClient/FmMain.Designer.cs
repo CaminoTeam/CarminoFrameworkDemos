@@ -249,7 +249,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.Name = "FmMain";
-            this.Text = "Form1";
+            this.Text = "Camino Demo - Duelist";
             this.Load += new System.EventHandler(this.FmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.PBAvatarPlayer2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBAvatarPlayer1)).EndInit();
