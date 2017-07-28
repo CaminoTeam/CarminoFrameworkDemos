@@ -147,6 +147,7 @@
             this.BtnUseBarcode.TabIndex = 8;
             this.BtnUseBarcode.Text = "UseBarcode";
             this.BtnUseBarcode.UseVisualStyleBackColor = false;
+            this.BtnUseBarcode.Click += new System.EventHandler(this.BtnUseBarcode_Click);
             // 
             // FmMain
             // 

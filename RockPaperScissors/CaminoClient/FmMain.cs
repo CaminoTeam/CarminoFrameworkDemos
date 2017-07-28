@@ -151,5 +151,11 @@ namespace CaminoClient
 
             }
         }
+
+        private void BtnUseBarcode_Click(object sender, EventArgs e)
+        {
+            TBBarcode.Text = "";
+            TBBarcode.Focus();
+        }
     }
 }
